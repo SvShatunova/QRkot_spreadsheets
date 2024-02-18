@@ -7,13 +7,13 @@ from app.schemas.charity_project import (
     CharityProjectCreate, CharityProjectDB, CharityProjectUpdate
 )
 from app.crud.charity_project import charity_project_crud
-from app.api.validators import (check_charity_project_exists, check_name_duplicate,
+from app.api.validators import (check_charity_project_exists,
+                                check_name_duplicate,
                                 check_charity_project_closed,
                                 check_charity_project_invested_sum,
                                 check_charity_project_already_invested)
 from app.core.user import current_superuser
 from app.services.investing import investing
-from app.models import Donation
 
 
 router = APIRouter()
@@ -32,7 +32,8 @@ async def create_new_charity_project(
     await check_name_duplicate(charity_project.name, session)
 
     new_project = await charity_project_crud.create(charity_project, session)
-    new_project = await investing(new_project, Donation, session)
+    await investing(session)
+    await session.refresh(new_project)
     return new_project
 
 

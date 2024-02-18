@@ -43,7 +43,9 @@ def check_charity_project_closed(charity_project: CharityProject):
         )
 
 
-def check_charity_project_invested_sum(project: CharityProject, new_amount: int):
+def check_charity_project_invested_sum(
+        project: CharityProject,
+        new_amount: int):
     if project.invested_amount > new_amount:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,

@@ -2,6 +2,13 @@ from typing import Optional
 
 from pydantic import BaseSettings, EmailStr
 
+SEC_IN_HOUR = 3600
+MIN_LEN_PASSWORD = 3
+DATE_FORMAT = '%Y/%m/%d %H:%M:%S'
+ROW_COUNT = 100
+COLUMN_COUNT = 11
+SHEET_ID = 0
+
 
 class Settings(BaseSettings):
     app_title: str = 'Кошачий благотворительный фонд'

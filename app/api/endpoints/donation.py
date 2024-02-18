@@ -8,7 +8,7 @@ from app.schemas.donation import (
     DonationCreate,
     DonationUser
 )
-from app.models import User, CharityProject
+from app.models import User
 from app.core.user import current_user, current_superuser
 from app.services.investing import investing
 
@@ -33,7 +33,8 @@ async def create_donation(
 ):
     """Только для зарегистрированных пользователей."""
     new_donation = await donation_crud.create(donation, session, user)
-    new_donation = await investing(new_donation, CharityProject, session)
+    await investing(session)
+    await session.refresh(new_donation)
     return new_donation
 
 
