@@ -35,7 +35,6 @@ TABLE_VAIUES = [
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание']
 ]
-InvalidTableLength = 'Превышено допустимое количество строк/столбцов в таблице.'
 
 
 async def spreadsheets_create(
@@ -97,7 +96,7 @@ async def spreadsheets_update_value(
     row_length = len(table_values)
     column_length = max(map(len, table_values))
     if row_length > ROW_COUNT or column_length > COLUMN_COUNT:
-        raise InvalidTableLength(
+        raise ValueError(
             'Превышено допустимое количество строк/столбцов в таблице.'
             f'Количество строк: {row_length}. '
             f'Допустимое количество строк: {ROW_COUNT}.'

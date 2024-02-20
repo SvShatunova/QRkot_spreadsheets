@@ -76,4 +76,4 @@ uvicorn app.main:app --reload
 
 ### Автор
 
-- [Светлана Шатунова](https://github.com/SvShatunova)
+[Светлана Шатунова](https://github.com/SvShatunova)
