@@ -1,9 +1,12 @@
-from typing import Optional
+from typing import Optional, List, TypeVar
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import select
+from sqlalchemy import asc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.db import Base
 from app.models import User
+
+ModelType = TypeVar('ModelType', bound=Base)
 
 
 class CRUDBase:
@@ -79,3 +82,16 @@ class CRUDBase:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
+
+    async def get_all_not_invested(
+        self,
+        session: AsyncSession,
+    ) -> List[ModelType]:
+        db_objects = await session.execute(
+            select(self.model).where(
+                self.model.fully_invested == 0
+            ).order_by(
+                asc(self.model.create_date)
+            )
+        )
+        return db_objects.scalars().all()

@@ -1,30 +1,30 @@
 from datetime import datetime
 
-from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List
 
-from app.crud.charity_project import charity_project_crud
-from app.crud.donation import donation_crud
+from app.models.base import CharityBase
 
 
-async def investing(session: AsyncSession):
+def investing(
+        target: CharityBase,
+        sources: List[CharityBase],
+) -> List[CharityBase]:
     """Полный процесс инвестирования с сохранением данных в БД."""
-    projects = await charity_project_crud.get_not_full_invested_objects(
-        session)
-    donations = await donation_crud.get_not_full_invested_objects(session)
+    updated = []
 
-    for project in projects:
-        for donation in donations:
-            if not project.fully_invested:
-                min_amount = min(
-                    project.full_amount - project.invested_amount,
-                    donation.full_amount - donation.invested_amount)
-                project.invested_amount += min_amount
-                donation.invested_amount += min_amount
-                if project.full_amount == project.invested_amount:
-                    project.fully_invested = True
-                    project.close_date = datetime.utcnow()
-                if donation.full_amount == donation.invested_amount:
-                    donation.fully_invested = True
-                    donation.close_date = datetime.utcnow()
-
-    await session.commit()
+    for source in sources:
+        available_amount = min(
+            source.full_amount - source.invested_amount,
+            target.full_amount - target.invested_amount
+        )
+        for investment in [target, source]:
+            investment.invested_amount += available_amount
+            investment.fully_invested = (
+                investment.invested_amount == investment.full_amount
+            )
+            if investment.fully_invested:
+                investment.close_date = datetime.utcnow()
+        updated.append(source)
+        if target.fully_invested:
+            break
+    return updated

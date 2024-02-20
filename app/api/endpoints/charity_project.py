@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.crud.donation import donation_crud
 from app.core.db import get_async_session
 from app.schemas.charity_project import (
     CharityProjectCreate, CharityProjectDB, CharityProjectUpdate
@@ -19,20 +20,30 @@ from app.services.investing import investing
 router = APIRouter()
 
 
-@router.post('/',
-             response_model=CharityProjectDB,
-             response_model_exclude_none=True,
-             dependencies=[Depends(current_superuser)],
-             )
+@router.post(
+    '/',
+    response_model=CharityProjectDB,
+    response_model_exclude_none=True,
+    dependencies=[Depends(current_superuser)],
+)
 async def create_new_charity_project(
     charity_project: CharityProjectCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
     """Только для суперпользователей."""
-    await check_name_duplicate(charity_project.name, session)
-
-    new_project = await charity_project_crud.create(charity_project, session)
-    await investing(session)
+    await check_name_duplicate(
+        charity_project.name,
+        session
+    )
+    new_project = await charity_project_crud.create(
+        charity_project,
+        session,
+    )
+    investing(
+        new_project,
+        await donation_crud.get_all_not_invested(session)
+    )
+    await session.commit()
     await session.refresh(new_project)
     return new_project
 
