@@ -54,7 +54,7 @@ class CRUDBase:
         session.add(db_obj)
         if commit_flag:
             await session.commit()
-        await session.refresh(db_obj)
+            await session.refresh(db_obj)
         return db_obj
 
     async def update(

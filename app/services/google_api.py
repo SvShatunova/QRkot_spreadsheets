@@ -1,12 +1,13 @@
-from datetime import datetime
-
 from copy import deepcopy
+from datetime import datetime
 
 from aiogoogle import Aiogoogle
 
-from app.core.config import settings
 from app.core.config import (
-    settings, DATE_FORMAT, ROW_COUNT, COLUMN_COUNT
+    settings,
+    DATE_FORMAT,
+    ROW_COUNT,
+    COLUMN_COUNT
 )
 
 SPREADSHEET_BODY = {
@@ -34,6 +35,7 @@ TABLE_VAIUES = [
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание']
 ]
+InvalidTableLength = 'Превышено допустимое количество строк/столбцов в таблице.'
 
 
 async def spreadsheets_create(
@@ -74,11 +76,10 @@ async def set_user_permissions(
 
 
 async def spreadsheets_update_value(
-        spreadsheetid: str,
+        spreadsheet_id: str,
         charity_projects: list,
         wrapper_services: Aiogoogle
 ) -> None:
-    """Обновление данных в таблице."""
     table_data = [
         [project.name,
          str(project.close_date - project.create_date),
@@ -95,13 +96,21 @@ async def spreadsheets_update_value(
     }
     row_length = len(table_values)
     column_length = max(map(len, table_values))
+    if row_length > ROW_COUNT or column_length > COLUMN_COUNT:
+        raise InvalidTableLength(
+            'Превышено допустимое количество строк/столбцов в таблице.'
+            f'Количество строк: {row_length}. '
+            f'Допустимое количество строк: {ROW_COUNT}.'
+            f'Количество столбцов: {row_length}.'
+            f'Допустимое количество столбцов: {ROW_COUNT}.'
+        )
     update_body = {
         'majorDimension': 'ROWS',
         'values': TABLE_VAIUES
     }
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
-            spreadsheetId=spreadsheetid,
+            spreadsheetId=spreadsheet_id,
             range=f'R1C1:R{row_length}C{column_length}',
             valueInputOption='USER_ENTERED',
             json=update_body

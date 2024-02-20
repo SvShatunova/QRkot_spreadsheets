@@ -9,9 +9,7 @@ def investing(
         target: CharityBase,
         sources: List[CharityBase],
 ) -> List[CharityBase]:
-    """Полный процесс инвестирования с сохранением данных в БД."""
     updated = []
-
     for source in sources:
         available_amount = min(
             source.full_amount - source.invested_amount,
