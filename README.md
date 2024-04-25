@@ -1,4 +1,4 @@
-# QRkot_spreadseets
+# cat_fund
 
 Фонд собирает пожертвования на различные целевые проекты: на медицинское обслуживание нуждающихся хвостатых, на обустройство кошачьей колонии в подвале, на корм оставшимся без попечения кошкам — на любые цели, связанные с поддержкой кошачьей популяции.
 
@@ -12,17 +12,17 @@
 - Asyncio
 - Google Cloud Platform
 - Google Sheets Api
-- Googla Drive Api
+- Google Drive Api
 
 ### Запуск проекта
 
 - Клонируйте репозитоий
 
-git@github.com:SvShatunova/QRkot_spreadsheets.git
+git@github.com:SvShatunova/cat_fund.git
 
 - Перейти в нужную папку
 
-cd QRkot_spreadsheets
+cd cat_fund
 
 - Установите и активируйте виртуальное окружение
 
