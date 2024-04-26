@@ -4,15 +4,13 @@
 
 ## Технологии
 
-- Python 3.9
-- Фреймворк FastAPI
-- SQLAlchemy
-- Alembic
-- Pydantic
-- Asyncio
-- Google Cloud Platform
-- Google Sheets Api
-- Google Drive Api
+![Python](https://img.shields.io/badge/python-3.9-blue?logo=python)
+![Framework-FastAPI](https://img.shields.io/badge/Framework-FastAPI-brightgreen?logo=pydantic&labelColor=grey&color=blue)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-brightgreen?logo=pydantic&labelColor=grey&color=blue)
+![Pydantic](https://img.shields.io/badge/Pydantic-brightgreen?logo=pydantic&labelColor=grey&color=blue)
+![Google-Cloud](https://img.shields.io/badge/Google-Cloud-brightgreen?logo=googlecloud&labelColor=grey&color=blue)
+![Google-Sheets](https://img.shields.io/badge/Google-Sheets-brightgreen?logo=googlesheets&labelColor=grey&color=blue)
+![Google-Drive](https://img.shields.io/badge/Google-Drive-brightgreen?logo=googledrive&labelColor=grey&color=blue)
 
 ### Запуск проекта
 
